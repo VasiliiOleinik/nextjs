@@ -1,13 +1,9 @@
-import { useState } from "react";
 import Link from "next/link";
+import MainContainer from "../components/MainContainer";
 
-const Users = () => {
-    const [users, setUsers] = useState([
-        { id: 1, name: 'John' },
-        { id: 2, name: 'Bob' }
-    ])
+const Users = ({ users }) => {
     return (
-        <div>
+        <MainContainer>
             <h1>List of users</h1>
             <ul>
                 {users.map(item =>
@@ -18,8 +14,16 @@ const Users = () => {
                     </li>
                 )}
             </ul>
-        </div>
+        </MainContainer>
     );
 };
 
 export default Users;
+
+export async function getStaticProps(context) {
+    const responce = await fetch('https://jsonplaceholder.typicode.com/users');
+    const users = await responce.json();
+    return {
+        props: { users }
+    }
+}
